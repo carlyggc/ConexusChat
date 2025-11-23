@@ -17,7 +17,7 @@ export default function Header({ user }) {
             <span>{user.name}</span>
           </>
         )}
-        <button onClick={logout} style={{marginLeft:12, padding:"6px 10px", background:"#ef4444", color:"#fff", border:"none", borderRadius:8}}>Cerrar sesión</button>
+        <button onClick={logout} style={{marginLeft:12, padding:"6px 10px", background:"#ef4444", color:"#fff", border:"none", borderRadius:8, cursor:"pointer"}}>Cerrar sesión</button>
       </div>
     </div>
   );

@@ -8,7 +8,7 @@ export default function ChatRoom({ channelId = null, directTo = null }) {
   const [messages, setMessages] = useState([]);
   const { user } = useContext(AuthContext);
 
-  // WebSocket para recibir mensajes en tiempo real
+  // WebSocket
   const { send } = useWebSocket(newMsg => {
     if (
       (channelId && newMsg.channel_id === channelId) ||
@@ -20,20 +20,22 @@ export default function ChatRoom({ channelId = null, directTo = null }) {
     }
   });
 
-  // Cargar mensajes al entrar al chat
+  // Cargar mensajes
   useEffect(() => {
     if (!channelId && !directTo) return;
 
-    const endpoint = directTo ? `/chat/private/${directTo}` : `/chat/${channelId}`;
-
-    api.get(endpoint)
-      .then(res => {
-        let data = [];
-        if (Array.isArray(res.data)) data = res.data;
-        else if (Array.isArray(res.data.messages)) data = res.data.messages;
+    const fetchMessages = async () => {
+      try {
+        const endpoint = directTo ? `/chat/private/${directTo}` : `/chat/${channelId}`;
+        const res = await api.get(endpoint);
+        const data = Array.isArray(res.data) ? res.data : res.data.messages || [];
         setMessages(data);
-      })
-      .catch(err => console.error("Error al cargar mensajes:", err));
+      } catch (err) {
+        console.error("Error al cargar mensajes:", err);
+      }
+    };
+
+    fetchMessages();
   }, [channelId, directTo]);
 
   // Enviar mensaje
@@ -46,9 +48,7 @@ export default function ChatRoom({ channelId = null, directTo = null }) {
 
     try {
       const res = await api.post("/chat/send", payload);
-      // Actualizar localmente
       setMessages(prev => [...prev, res.data]);
-      // Enviar por WebSocket
       send(res.data);
     } catch (err) {
       console.error("Error al enviar mensaje:", err);
@@ -60,7 +60,7 @@ export default function ChatRoom({ channelId = null, directTo = null }) {
       <div className="chat-messages">
         {messages.length > 0 ? (
           messages.map(m => (
-            <p key={m.id}>
+            <p key={`msg-${m.id}`}>
               <b>{m.sender_name || m.sender_id}</b>: {m.content}
             </p>
           ))

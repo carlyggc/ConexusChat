@@ -21,13 +21,13 @@ export default function ChannelList({ onSelect }) {
     <div className="channel-list">
       <h4>Canales</h4>
       {channels.map(c => (
-        <p key={c.id} onClick={() => onSelect(c.id)}>
+        <p key={c.id} onClick={() => onSelect(c.id)} style={{cursor:"pointer"}}>
           # {c.name}
         </p>
       ))}
 
-      <input value={name} onChange={e => setName(e.target.value)} placeholder="Nombre del canal" />
-      <button onClick={createChannel}>Crear canal</button>
+      <input value={name} onChange={e => setName(e.target.value)} style={{flex:1, padding:5, borderRadius:8}} placeholder="Nombre del canal" />
+      <button onClick={createChannel} style={{background:"#eb4116ff", color:"#fff", borderRadius:8, cursor:"pointer"}}>Crear canal</button>
     </div>
   );
 }

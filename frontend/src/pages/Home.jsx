@@ -3,81 +3,90 @@ import ChannelList from "../components/ChannelList";
 import ChatRoom from "../components/ChatRoom";
 import UserList from "../components/UserList";
 import api from "../api/axiosConfig";
-import Header from "../componentes/Header"; // nuevo
-import "../styles.css"; // estilos modernos
+import Header from "../componentes/Header";
+import "../styles.css";
 
 export default function Home() {
   const [channelId, setChannelId] = useState(null);
   const [user, setUser] = useState(null);
   const [selectedUserId, setSelectedUserId] = useState(null);
+  const [channels, setChannels] = useState([]);
 
-  // Obtener usuario logueado con JWT
+  // Obtener usuario logueado
   useEffect(() => {
-    api.get("/auth/me")
-      .then(res => setUser(res.data.user))
-      .catch(err => console.error("Error al obtener usuario:", err));
+    const fetchUser = async () => {
+      try {
+        const res = await api.get("/auth/me");
+        setUser(res.data.user);
+      } catch (err) {
+        console.error("Error al obtener usuario:", err);
+      }
+    };
+    fetchUser();
   }, []);
 
-  // Crear canal por defecto si no existen
-  const createDefaultChannel = async () => {
-    try {
-      const res = await api.post("/channels/create", { name: "General" });
-      setChannelId(res.data.id);
-    } catch (err) {
-      console.error("Error al crear canal por defecto:", err);
-    }
-  };
-
-  // Cargar canales
+  // Cargar canales o crear por defecto
   useEffect(() => {
-    api.get("/channels")
-      .then(res => {
+    const fetchChannels = async () => {
+      try {
+        const res = await api.get("/channels");
         if (res.data.length > 0) {
+          setChannels(res.data);
           setChannelId(res.data[0].id);
         } else {
-          createDefaultChannel();
+          const defaultChannel = await api.post("/channels/create", { name: "General" });
+          setChannels([defaultChannel.data]);
+          setChannelId(defaultChannel.data.id);
         }
-      })
-      .catch(err => console.error("Error al cargar canales:", err));
+      } catch (err) {
+        console.error("Error al cargar canales:", err);
+      }
+    };
+    fetchChannels();
   }, []);
 
   return (
     <div className="layout">
-
-      {/* --- HEADER GLOBAL --- */}
       <Header user={user} />
 
       <div className="main-content">
-
-        {/* --- SIDEBAR CANALES --- */}
+        {/* Sidebar canales */}
         <div className="sidebar">
-          <ChannelList onSelect={id => {
-            setChannelId(id);
-            setSelectedUserId(null); // Limpiar chat directo
-          }} />
+          <ChannelList
+            channels={channels}
+            onSelect={id => {
+              setChannelId(id);
+              setSelectedUserId(null);
+            }}
+          />
         </div>
 
-        {/* --- CHAT --- */}
+        {/* Área de chat */}
         <div className="chat-area">
-          {selectedUserId ? (
-            <ChatRoom directTo={selectedUserId} />
-          ) : channelId ? (
-            <ChatRoom channelId={channelId} />
+          {user ? (
+            selectedUserId ? (
+              <ChatRoom key={`user-${selectedUserId}`} directTo={selectedUserId} />
+            ) : channelId ? (
+              <ChatRoom key={`channel-${channelId}`} channelId={channelId} />
+            ) : (
+              <div className="empty">
+                <h2>Selecciona un canal o un usuario</h2>
+              </div>
+            )
           ) : (
-            <div className="empty">
-              <h2>Selecciona un canal o un usuario</h2>
-            </div>
+            <div className="loading">Cargando usuario...</div>
           )}
         </div>
 
-        {/* --- SIDEBAR USUARIOS --- */}
+        {/* Sidebar usuarios */}
         <div className="sidebar">
-          <UserList onSelectUser={id => {
-            setSelectedUserId(id);
-            setChannelId(null); // Limpiar canal
-          }} />
+          <UserList
+            onSelectUser={id => {
+              setSelectedUserId(id);
+              setChannelId(null);
+            }}
+          />
         </div>
-
       </div>
     </div>
   );
