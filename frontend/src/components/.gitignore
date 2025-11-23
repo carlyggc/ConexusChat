@@ -1,0 +1,20 @@
+# Node modules
+node_modules/
+
+# Logs
+*.log
+
+# Dependencias de Yarn o npm
+yarn-error.log
+package-lock.json
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Build
+build/
+dist/
+
+# Variables de entorno
+.env

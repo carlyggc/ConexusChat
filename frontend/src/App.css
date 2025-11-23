@@ -1,0 +1,178 @@
+/* ======= RESET Y CONFIGURACIÓN GENERAL ======= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background: #f4f5f7;
+  color: #333;
+}
+
+/* ======= LAYOUT GENERAL ======= */
+.app-container {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ======= SIDEBAR DE CANALES ======= */
+.sidebar {
+  width: 260px;
+  background: #1e293b;
+  color: #fff;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar h2 {
+  font-size: 20px;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.channel-list {
+  list-style: none;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.channel-item {
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s ease;
+  margin-bottom: 5px;
+  background: #334155;
+}
+
+.channel-item:hover {
+  background: #475569;
+}
+
+/* ======= CONTENIDO DEL CHAT ======= */
+.chat-container {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  background: #e8ebef;
+}
+
+.chat-header {
+  padding: 15px 20px;
+  background: #fff;
+  border-bottom: 1px solid #d1d5db;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.chat-messages {
+  flex-grow: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+/* ======= BURBUJAS DE MENSAJE ======= */
+.message {
+  max-width: 70%;
+  padding: 10px 14px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  line-height: 1.4;
+  position: relative;
+}
+
+.message.me {
+  background: #4f46e5;
+  color: white;
+  margin-left: auto;
+  border-bottom-right-radius: 2px;
+}
+
+.message.other {
+  background: white;
+  color: #333;
+  margin-right: auto;
+  border-bottom-left-radius: 2px;
+}
+
+.message small {
+  display: block;
+  font-size: 10px;
+  opacity: 0.6;
+  margin-top: 3px;
+}
+
+/* ======= INPUT DE MENSAJE ======= */
+.message-input-container {
+  padding: 15px;
+  background: #fff;
+  border-top: 1px solid #d1d5db;
+  display: flex;
+  gap: 10px;
+}
+
+.message-input {
+  flex-grow: 1;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  font-size: 15px;
+  outline: none;
+}
+
+.message-input:focus {
+  border-color: #4f46e5;
+}
+
+.send-button {
+  background: #4f46e5;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.send-button:hover {
+  background: #3730a3;
+}
+
+/* ======= LOGIN ======= */
+.login-container {
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background: #f1f5f9;
+}
+
+.google-btn {
+  background: #4285f4;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+.google-btn:hover {
+  background: #3367d6;
+}
+
+/* ===== RESPONSIVE ====== */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 180px;
+  }
+
+  .message {
+    max-width: 85%;
+  }
+}
