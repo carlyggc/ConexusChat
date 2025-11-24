@@ -8,7 +8,6 @@ Este proyecto es una **aplicación de chat colaborativo en tiempo real**, desarr
 
 Permite:
 - Mensajería en canales públicos
-- Chat privado entre usuarios (1–1)
 - Presencia en tiempo real
 - Autenticación segura con Google
 - UI moderna y responsiva
@@ -31,18 +30,9 @@ Permite:
 - WebSocket nativo o WS  
 - JWT (jsonwebtoken)  
 - Google OAuth 2.0  
-- Middlewares personalizados  
-- Rutas RESTful para canales y mensajes  
+
 
 ### 🔹 Base de datos
-- SQLite / MySQL / PostgreSQL (según tu implementación)
+- SQLite
 - Consultas SQL para mensajes, usuarios y canales
 
----
-
-## 📦 Instalación y ejecución
-
-### 🔧 1. Clonar repositorio
-```bash
-git clone https://github.com/USUARIO/NOMBRE-REPO.git
-cd NOMBRE-REPO
